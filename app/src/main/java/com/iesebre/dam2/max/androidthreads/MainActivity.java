@@ -14,6 +14,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mImageView;
+    private final static String IMAGE_URL = "https://i.ytimg.com/vi/BV_d7RDYdzw/maxresdefault.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         new Thread(new Runnable() {
             public void run() {
-                Bitmap b = loadImageFromNetwork("https://i.ytimg.com/vi/BV_d7RDYdzw/maxresdefault.jpg");
-                mImageView.setImageBitmap(b);
+                final Bitmap bitmap = loadImageFromNetwork(IMAGE_URL);
+                mImageView.post(new Runnable() {
+                    public void run() {
+                        mImageView.setImageBitmap(bitmap);
+                    }
+                });
             }
         }).start();
     }
@@ -55,7 +60,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return null;
     }
-
-
-
 }
