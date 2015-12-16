@@ -9,8 +9,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.iesebre.dam2.max.androidthreads.MainActivity">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Click me!"
+        android:id="@+id/btnLoadImage"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp" />
+
+    <ImageView
+        android:layout_width="500px"
+        android:layout_height="500px"
+        android:id="@+id/ivLoadedImage"
+        android:layout_below="@+id/btnLoadImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp" />
 </RelativeLayout>
