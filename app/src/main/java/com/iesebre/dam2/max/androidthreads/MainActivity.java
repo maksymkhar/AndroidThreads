@@ -1,15 +1,13 @@
 package com.iesebre.dam2.max.androidthreads;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.io.InputStream;
-import java.net.URL;
+import threads.DownloadImageTask;
+import utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,7 +29,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.btnLoadImage:
-                imageThread();
+
+                //imageThread();
+
+                DownloadImageTask imageAsyncTask = new DownloadImageTask(mImageView);
+                imageAsyncTask.execute(IMAGE_URL);
+
                 break;
         }
     }
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         new Thread(new Runnable() {
             public void run() {
-                final Bitmap bitmap = loadImageFromNetwork(IMAGE_URL);
+                final Bitmap bitmap = Utils.loadImageFromNetwork(IMAGE_URL);
                 mImageView.post(new Runnable() {
                     public void run() {
                         mImageView.setImageBitmap(bitmap);
@@ -48,16 +51,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         }).start();
-    }
-
-    private Bitmap loadImageFromNetwork(String url){
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }
