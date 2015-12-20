@@ -12,7 +12,10 @@ import utils.Utils;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mImageView;
-    private final static String IMAGE_URL = "https://i.ytimg.com/vi/BV_d7RDYdzw/maxresdefault.jpg";
+    private DownloadImageTask imageAsyncTask;
+
+    private final static String SMALL_IMAGE_URL = "https://i.ytimg.com/vi/BV_d7RDYdzw/maxresdefault.jpg";
+    private final static String BIG_IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/d/d6/Hawaii-Big-Island-TF.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +23,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mImageView = (ImageView) findViewById(R.id.ivLoadedImage);
-        findViewById(R.id.btnLoadImage).setOnClickListener(this);
+
+        findViewById(R.id.btnLoadSmallImage).setOnClickListener(this);
+        findViewById(R.id.btnLoadBigImage).setOnClickListener(this);
     }
 
     @Override
@@ -28,13 +33,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         switch (v.getId())
         {
-            case R.id.btnLoadImage:
-
-                //imageThread();
-
-                DownloadImageTask imageAsyncTask = new DownloadImageTask(mImageView);
-                imageAsyncTask.execute(IMAGE_URL);
-
+            case R.id.btnLoadSmallImage:
+                imageAsyncTask = new DownloadImageTask(mImageView, this);
+                imageAsyncTask.execute(SMALL_IMAGE_URL);
+                break;
+            case R.id.btnLoadBigImage:
+                imageAsyncTask = new DownloadImageTask(mImageView, this);
+                imageAsyncTask.execute(BIG_IMAGE_URL);
                 break;
         }
     }
@@ -43,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         new Thread(new Runnable() {
             public void run() {
-                final Bitmap bitmap = Utils.loadImageFromNetwork(IMAGE_URL);
+                final Bitmap bitmap = Utils.loadImageFromNetwork(BIG_IMAGE_URL);
                 mImageView.post(new Runnable() {
                     public void run() {
                         mImageView.setImageBitmap(bitmap);
